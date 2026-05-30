@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deze website wordt gebouwd</title>
+  <title>Website in aanbouw | AI voor de bouw</title>
   <style>
     :root {
-      --brand-yellow: #FED130;
-      --brand-blue: #111E4C;
-      --bg: #ffffff;
-      --text: #111E4C;
-      --logo-width: min(56vw, 520px);
-      --cycle: 13s; /* 1 variant: 3s opbouw + 8s blijven staan + 1s fade + 1s pauze */
-      --shadow: 0 12px 30px rgba(17, 30, 76, 0.10);
+      --bg: #0b1220;
+      --panel: #131d30;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --line: #334155;
+      --accent: #22d3ee;
+      --warning: #f59e0b;
+      --ok: #34d399;
+      --brand-yellow: #fed130;
+      --brand-blue: #111e4c;
+      --logo-width: min(56vw, 420px);
+      --logo-cycle: 12s;
     }
 
     * {
@@ -26,37 +31,46 @@
 
     body {
       margin: 0;
-      background: var(--bg);
+      font-family: "Segoe UI", Arial, sans-serif;
       color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(rgba(19, 29, 48, 0.7), rgba(19, 29, 48, 0.8)),
+        linear-gradient(0deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        var(--bg);
+      background-size: 100% 100%, 100% 36px, 36px 100%, 100% 100%;
     }
 
-    .build-screen {
+    .page {
       min-height: 100vh;
-      width: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .wrap {
+      width: min(940px, 100%);
+      display: grid;
+      gap: 22px;
+    }
+
+    .logo-wrap {
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      gap: 30px;
-      padding: 32px;
-      text-align: center;
-      background: #ffffff;
-      overflow: hidden;
     }
 
     .brand-loader {
       position: relative;
       width: var(--logo-width);
       aspect-ratio: 405 / 285;
-      filter: drop-shadow(var(--shadow));
+      filter: drop-shadow(0 10px 26px rgba(11, 18, 32, 0.45));
     }
 
     .brand-variant {
       position: absolute;
       inset: 0;
       opacity: 0;
-      animation: layerWindow var(--cycle) linear infinite;
+      animation: layerWindow var(--logo-cycle) linear infinite;
       animation-delay: var(--start);
       will-change: opacity;
     }
@@ -75,61 +89,475 @@
       stroke-dasharray: 100;
       stroke-dashoffset: 100;
       fill-opacity: 0;
-      animation: drawPath var(--cycle) ease-in-out infinite;
+      opacity: 1;
+      animation: drawPath var(--logo-cycle) ease-in-out infinite;
       animation-delay: calc(var(--start) + var(--path-delay));
       will-change: stroke-dashoffset, fill-opacity, opacity;
     }
 
-    .build-text {
-      margin: 0;
-      font-size: clamp(20px, 2vw, 30px);
-      line-height: 1.2;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: var(--text);
+    .copy {
+      display: grid;
+      gap: 10px;
     }
 
-    /* 1 variant: 3s opbouw + 8s blijven staan + 1s fade + 1s pauze */
-    @keyframes layerWindow {
-      0%, 84.6154% {
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: clamp(0.88rem, 1vw, 1rem);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      line-height: 1.05;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      line-height: 1.5;
+    }
+
+    .status {
+      width: fit-content;
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 6px;
+      border: 1px solid #1d936c;
+      color: #c7f9e6;
+      background: rgba(52, 211, 153, 0.12);
+      font-size: 0.92rem;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--ok);
+      animation: pulse 1.7s ease-in-out infinite;
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 8.4;
+      min-height: 220px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(148, 163, 184, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.09) 1px, transparent 1px),
+        var(--panel);
+      background-size: 100% 24px, 24px 100%, 100% 100%;
+      overflow: hidden;
+    }
+
+    .ground {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 46px;
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          #202f47 0,
+          #202f47 10px,
+          #1b2a40 10px,
+          #1b2a40 20px
+        );
+      border-top: 1px solid #445168;
+    }
+
+    .crane {
+      position: absolute;
+      left: 6%;
+      bottom: 46px;
+      width: 35%;
+      height: 68%;
+      min-width: 190px;
+    }
+
+    .mast {
+      position: absolute;
+      left: 4px;
+      bottom: 0;
+      width: 16px;
+      height: 86%;
+      border-radius: 4px;
+      background: #cbd5e1;
+    }
+
+    .arm {
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 90%;
+      height: 14px;
+      border-radius: 4px;
+      background: #d6dee9;
+    }
+
+    .counterweight {
+      position: absolute;
+      left: -18px;
+      top: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: #94a3b8;
+    }
+
+    .trolley {
+      position: absolute;
+      left: 14%;
+      top: 10px;
+      width: 20px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--warning);
+      animation: trolley 10s ease-in-out infinite;
+    }
+
+    .cable {
+      position: absolute;
+      left: 9px;
+      top: 16px;
+      width: 2px;
+      height: 96px;
+      background: #9ca3af;
+      transform-origin: top;
+      animation: cable 10s ease-in-out infinite;
+    }
+
+    .payload {
+      position: absolute;
+      left: -7px;
+      top: 20px;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid #67e8f9;
+      background: var(--accent);
+      animation: payload 10s ease-in-out infinite;
+    }
+
+    .building {
+      position: absolute;
+      right: 8%;
+      bottom: 46px;
+      width: 30%;
+      height: 62%;
+      min-width: 160px;
+      border: 2px solid #64748b;
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.35);
+    }
+
+    .module {
+      position: absolute;
+      width: 42%;
+      height: 22%;
+      border-radius: 4px;
+      border: 1px solid #6ee7ff;
+      background: linear-gradient(135deg, #67e8f9, #22d3ee);
+      opacity: 0;
+      transform: translateY(-120px);
+    }
+
+    .module-1 {
+      left: 7%;
+      bottom: 7%;
+      animation: place-1 10s linear infinite;
+    }
+
+    .module-2 {
+      right: 7%;
+      bottom: 7%;
+      animation: place-2 10s linear infinite;
+    }
+
+    .module-3 {
+      left: 7%;
+      bottom: 33%;
+      animation: place-3 10s linear infinite;
+    }
+
+    .module-4 {
+      right: 7%;
+      bottom: 33%;
+      animation: place-4 10s linear infinite;
+    }
+
+    .progress {
+      display: grid;
+      gap: 10px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.94rem;
+      color: #cbd5e1;
+    }
+
+    .phase {
+      color: var(--warning);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .phase::before {
+      content: "Fundament bouwen";
+      animation: phase 10s steps(1) infinite;
+    }
+
+    .track {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #364152;
+      background: #182338;
+    }
+
+    .bar {
+      height: 100%;
+      width: 8%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--warning), var(--accent));
+      animation: progress 10s linear infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.9;
+      }
+      50% {
+        transform: scale(1.25);
         opacity: 1;
       }
-      92.3077%, 100% {
+    }
+
+    @keyframes trolley {
+      0%,
+      10% {
+        transform: translateX(0);
+      }
+      22%,
+      32% {
+        transform: translateX(26%);
+      }
+      44%,
+      54% {
+        transform: translateX(52%);
+      }
+      66%,
+      76% {
+        transform: translateX(78%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes cable {
+      0%,
+      10%,
+      22%,
+      32%,
+      44%,
+      54%,
+      66%,
+      76%,
+      100% {
+        transform: scaleY(0.45);
+      }
+      16%,
+      38%,
+      60%,
+      82% {
+        transform: scaleY(1);
+      }
+    }
+
+    @keyframes payload {
+      0%,
+      10%,
+      22%,
+      32%,
+      44%,
+      54%,
+      66%,
+      76%,
+      100% {
+        transform: translateY(34px);
+      }
+      16%,
+      38%,
+      60%,
+      82% {
+        transform: translateY(92px);
+      }
+    }
+
+    @keyframes place-1 {
+      0%,
+      14% {
+        opacity: 0;
+        transform: translateY(-120px);
+      }
+      20%,
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes place-2 {
+      0%,
+      36% {
+        opacity: 0;
+        transform: translateY(-120px);
+      }
+      42%,
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes place-3 {
+      0%,
+      58% {
+        opacity: 0;
+        transform: translateY(-120px);
+      }
+      64%,
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes place-4 {
+      0%,
+      80% {
+        opacity: 0;
+        transform: translateY(-120px);
+      }
+      86%,
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes progress {
+      0% {
+        width: 8%;
+      }
+      24% {
+        width: 32%;
+      }
+      49% {
+        width: 56%;
+      }
+      74% {
+        width: 80%;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+
+    @keyframes phase {
+      0%,
+      32% {
+        content: "Fundament bouwen";
+      }
+      33%,
+      66% {
+        content: "AI-modellen trainen";
+      }
+      67%,
+      100% {
+        content: "Platform afwerken";
+      }
+    }
+
+    @keyframes layerWindow {
+      0%,
+      24.5% {
+        opacity: 1;
+      }
+      25.5%,
+      100% {
         opacity: 0;
       }
     }
 
-    /* Tekenen en vullen in de eerste 3 seconden */
     @keyframes drawPath {
       0% {
         stroke-dashoffset: 100;
         fill-opacity: 0;
         opacity: 1;
       }
-      18.4615% {
+      10% {
         stroke-dashoffset: 0;
         fill-opacity: 0;
         opacity: 1;
       }
-      23.0769% {
+      12.3% {
         stroke-dashoffset: 0;
         fill-opacity: 1;
         opacity: 1;
       }
+      24.5% {
+        stroke-dashoffset: 0;
+        fill-opacity: 1;
+        opacity: 1;
+      }
+      25.5%,
       100% {
         stroke-dashoffset: 0;
         fill-opacity: 1;
-        opacity: 1;
+        opacity: 0;
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 760px) {
       :root {
-        --logo-width: min(80vw, 360px);
+        --logo-width: min(80vw, 340px);
       }
 
-      .build-screen {
-        gap: 24px;
+      .wrap {
+        gap: 18px;
+      }
+
+      .scene {
+        aspect-ratio: 16 / 10;
+      }
+
+      .crane {
+        left: 4%;
+        width: 44%;
+      }
+
+      .building {
+        right: 4%;
+        width: 38%;
       }
     }
 
@@ -139,7 +567,7 @@
         opacity: 0;
       }
 
-      .brand-variant:last-child {
+      .brand-variant:first-child {
         opacity: 1;
       }
 
@@ -149,25 +577,119 @@
         fill-opacity: 1;
         opacity: 1;
       }
+
+      .status-dot,
+      .trolley,
+      .cable,
+      .payload,
+      .module,
+      .bar,
+      .phase::before {
+        animation: none;
+      }
+
+      .module {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .phase::before {
+        content: "Bijna klaar";
+      }
+
+      .bar {
+        width: 82%;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="build-screen" aria-live="polite">
-    <div class="brand-loader" role="img" aria-label="Logo dat wordt opgebouwd">
+  <main class="page">
+    <div class="wrap">
+      <div class="logo-wrap">
+        <div class="brand-loader" role="img" aria-label="Geanimeerd bedrijfslogo">
+          <div class="brand-variant" style="--start: 0s;">
+            <svg viewBox="35 30 405 285" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="brand-path" style="--path-delay: 0s;" pathLength="100" d="M392.72,100.62c-39.55,60.55-84.96,130.05-120.33,184.21-9.06,13.87-25.82,22.42-43.94,22.42h-32.18c37.07-56.76,89.94-137.71,134.94-206.63h61.5Z" fill="#FED130" stroke="#FED130"/>
+              <path class="brand-path" style="--path-delay: 0.16s;" pathLength="100" d="M305.49,112.16c-10.01,15.33-20.33,31.13-30.74,47.05-21.92-33.51-60.32-92.01-78.47-119.77h32.07c18.19,0,35.02,8.55,44.15,22.45,10.97,16.7,25.29,38.55,32.99,50.26Z" fill="#FED130" stroke="#FED130"/>
+              <path class="brand-path" style="--path-delay: 0.34s;" pathLength="100" d="M435.75,34.72c-10.14,15.54-21.48,32.91-33.53,51.33h-61.48c12.06-18.48,23.39-35.83,33.51-51.33h61.5Z" fill="#111E4C" stroke="#111E4C"/>
+              <path class="brand-path" style="--path-delay: 0.52s;" pathLength="100" d="M208.84,260.17c-11.02,16.84-21.39,32.74-30.74,47.07h-97.1s-.02.02-.02.02h-23.46c-16.9,0-27.49-16.16-19.07-29.11,45.95-70.76,104.45-162.01,147.35-227.78,8.79,13.41,19.72,30.08,30.81,46.97-31.93,49.01-70.53,109.35-105.06,162.84,89.62.02,17.29-.02,97.3,0Z" fill="#111E4C" stroke="#111E4C"/>
+            </svg>
+          </div>
 
-      <!-- Variant -->
-      <div class="brand-variant" style="--start: 0s;">
-        <svg viewBox="35 30 405 285" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path class="brand-path" style="--path-delay: 0s;" pathLength="100" d="M392.72,100.62c-39.55,60.55-84.96,130.05-120.33,184.21-9.06,13.87-25.82,22.42-43.94,22.42h-32.18c37.07-56.76,89.94-137.71,134.94-206.63h61.5Z" fill="#111E4C" stroke="#111E4C"/>
-          <path class="brand-path" style="--path-delay: 0.25s;" pathLength="100" d="M305.49,112.16c-10.01,15.33-20.33,31.13-30.74,47.05-21.92-33.51-60.32-92.01-78.47-119.77h32.07c18.19,0,35.02,8.55,44.15,22.45,10.97,16.7,25.29,38.55,32.99,50.26Z" fill="#111E4C" stroke="#111E4C"/>
-          <path class="brand-path" style="--path-delay: 0.55s;" pathLength="100" d="M435.75,34.72c-10.14,15.54-21.48,32.91-33.53,51.33h-61.48c12.06-18.48,23.39-35.83,33.51-51.33h61.5Z" fill="#FED130" stroke="#FED130"/>
-          <path class="brand-path" style="--path-delay: 0.9s;" pathLength="100" d="M208.84,260.17c-11.02,16.84-21.39,32.74-30.74,47.07h-97.1s-.02.02-.02.02h-23.46c-16.9,0-27.49-16.16-19.07-29.11,45.95-70.76,104.45-162.01,147.35-227.78,8.79,13.41,19.72,30.08,30.81,46.97-31.93,49.01-70.53,109.35-105.06,162.84,89.62.02,17.29-.02,97.3,0Z" fill="#FED130" stroke="#FED130"/>
-        </svg>
+          <div class="brand-variant" style="--start: 3s;">
+            <svg viewBox="35 30 405 285" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="brand-path" style="--path-delay: 0s;" pathLength="100" d="M392.72,100.62c-39.55,60.55-84.96,130.05-120.33,184.21-9.06,13.87-25.82,22.42-43.94,22.42h-32.18c37.07-56.76,89.94-137.71,134.94-206.63h61.5Z" fill="#FED130" stroke="#FED130"/>
+              <path class="brand-path" style="--path-delay: 0.16s;" pathLength="100" d="M305.49,112.16c-10.01,15.33-20.33,31.13-30.74,47.05-21.92-33.51-60.32-92.01-78.47-119.77h32.07c18.19,0,35.02,8.55,44.15,22.45,10.97,16.7,25.29,38.55,32.99,50.26Z" fill="#111E4C" stroke="#111E4C"/>
+              <path class="brand-path" style="--path-delay: 0.34s;" pathLength="100" d="M435.75,34.72c-10.14,15.54-21.48,32.91-33.53,51.33h-61.48c12.06-18.48,23.39-35.83,33.51-51.33h61.5Z" fill="#FED130" stroke="#FED130"/>
+              <path class="brand-path" style="--path-delay: 0.52s;" pathLength="100" d="M208.84,260.17c-11.02,16.84-21.39,32.74-30.74,47.07h-97.1s-.02.02-.02.02h-23.46c-16.9,0-27.49-16.16-19.07-29.11,45.95-70.76,104.45-162.01,147.35-227.78,8.79,13.41,19.72,30.08,30.81,46.97-31.93,49.01-70.53,109.35-105.06,162.84,89.62.02,17.29-.02,97.3,0Z" fill="#111E4C" stroke="#111E4C"/>
+            </svg>
+          </div>
+
+          <div class="brand-variant" style="--start: 6s;">
+            <svg viewBox="35 30 405 285" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="brand-path" style="--path-delay: 0s;" pathLength="100" d="M392.72,100.62c-39.55,60.55-84.96,130.05-120.33,184.21-9.06,13.87-25.82,22.42-43.94,22.42h-32.18c37.07-56.76,89.94-137.71,134.94-206.63h61.5Z" fill="#111E4C" stroke="#111E4C"/>
+              <path class="brand-path" style="--path-delay: 0.16s;" pathLength="100" d="M305.49,112.16c-10.01,15.33-20.33,31.13-30.74,47.05-21.92-33.51-60.32-92.01-78.47-119.77h32.07c18.19,0,35.02,8.55,44.15,22.45,10.97,16.7,25.29,38.55,32.99,50.26Z" fill="#FED130" stroke="#FED130"/>
+              <path class="brand-path" style="--path-delay: 0.34s;" pathLength="100" d="M435.75,34.72c-10.14,15.54-21.48,32.91-33.53,51.33h-61.48c12.06-18.48,23.39-35.83,33.51-51.33h61.5Z" fill="#111E4C" stroke="#111E4C"/>
+              <path class="brand-path" style="--path-delay: 0.52s;" pathLength="100" d="M208.84,260.17c-11.02,16.84-21.39,32.74-30.74,47.07h-97.1s-.02.02-.02.02h-23.46c-16.9,0-27.49-16.16-19.07-29.11,45.95-70.76,104.45-162.01,147.35-227.78,8.79,13.41,19.72,30.08,30.81,46.97-31.93,49.01-70.53,109.35-105.06,162.84,89.62.02,17.29-.02,97.3,0Z" fill="#FED130" stroke="#FED130"/>
+            </svg>
+          </div>
+
+          <div class="brand-variant" style="--start: 9s;">
+            <svg viewBox="35 30 405 285" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="brand-path" style="--path-delay: 0s;" pathLength="100" d="M392.72,100.62c-39.55,60.55-84.96,130.05-120.33,184.21-9.06,13.87-25.82,22.42-43.94,22.42h-32.18c37.07-56.76,89.94-137.71,134.94-206.63h61.5Z" fill="#111E4C" stroke="#111E4C"/>
+              <path class="brand-path" style="--path-delay: 0.16s;" pathLength="100" d="M305.49,112.16c-10.01,15.33-20.33,31.13-30.74,47.05-21.92-33.51-60.32-92.01-78.47-119.77h32.07c18.19,0,35.02,8.55,44.15,22.45,10.97,16.7,25.29,38.55,32.99,50.26Z" fill="#111E4C" stroke="#111E4C"/>
+              <path class="brand-path" style="--path-delay: 0.34s;" pathLength="100" d="M435.75,34.72c-10.14,15.54-21.48,32.91-33.53,51.33h-61.48c12.06-18.48,23.39-35.83,33.51-51.33h61.5Z" fill="#FED130" stroke="#FED130"/>
+              <path class="brand-path" style="--path-delay: 0.52s;" pathLength="100" d="M208.84,260.17c-11.02,16.84-21.39,32.74-30.74,47.07h-97.1s-.02.02-.02.02h-23.46c-16.9,0-27.49-16.16-19.07-29.11,45.95-70.76,104.45-162.01,147.35-227.78,8.79,13.41,19.72,30.08,30.81,46.97-31.93,49.01-70.53,109.35-105.06,162.84,89.62.02,17.29-.02,97.3,0Z" fill="#FED130" stroke="#FED130"/>
+            </svg>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <p class="build-text">Deze website wordt gebouwd</p>
+      <section class="copy">
+        <p class="eyebrow">AI-oplossingen voor bouwbedrijven</p>
+        <h1>Onze website wordt gebouwd</h1>
+        <p class="lead">
+          We leggen de laatste hand aan een slim platform voor bouwbedrijven:
+          sneller plannen, scherper calculeren en efficienter uitvoeren.
+        </p>
+        <div class="status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>In aanbouw</span>
+        </div>
+      </section>
+
+      <section class="scene" aria-hidden="true">
+        <div class="ground"></div>
+
+        <div class="crane">
+          <div class="mast"></div>
+          <div class="arm"></div>
+          <div class="counterweight"></div>
+          <div class="trolley">
+            <div class="cable"></div>
+            <div class="payload"></div>
+          </div>
+        </div>
+
+        <div class="building">
+          <div class="module module-1"></div>
+          <div class="module module-2"></div>
+          <div class="module module-3"></div>
+          <div class="module module-4"></div>
+        </div>
+      </section>
+
+      <section class="progress" aria-live="polite">
+        <div class="progress-head">
+          <span>Website in aanbouw</span>
+          <span class="phase"></span>
+        </div>
+        <div class="track">
+          <div class="bar"></div>
+        </div>
+      </section>
+    </div>
   </main>
 </body>
 </html>
